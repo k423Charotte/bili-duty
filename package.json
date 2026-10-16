@@ -51,6 +51,7 @@
     "cordis.patch.yml",
     "README.md",
     "CHANGELOG.md",
+    "RELEASING.md",
     "LICENSE",
     "tools"
   ],
