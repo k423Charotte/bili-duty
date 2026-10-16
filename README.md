@@ -61,9 +61,11 @@ dsh plugin add bili-duty
 新插件的行要**重启时才进入组合**；替换已装包也必须重启才能加载新一代 JS 模块。
 
 ```powershell
-# Windows PowerShell（必须带 -ExecutionPolicy Bypass）
+# Windows：脚本会结束当前 DSH 进程再启动它（必须带 -ExecutionPolicy Bypass）
 powershell -ExecutionPolicy Bypass -File tools\restart-dsh.ps1
 ```
+
+> macOS / Linux：这个脚本只在 Windows 上有意义 —— 请**手动退出并重新启动 DSH**。插件本体的代码是跨平台的（没有平台专属 API）。
 
 重启后在页面上按一次 **F5**（客户端模块是页面侧的东西，重启宿主不等于刷新页面）。
 
