@@ -145,12 +145,13 @@ B 站对「按最新排序」有风控。插件**不会硬重试**，会改用�
 
 ## 排障与自检
 
-三套离线测试都不需要 DSH 在跑、不碰你的真实数据（用临时目录 + mock 网络）：
+四套离线检查都不需要 DSH 在跑、不碰你的真实数据（用临时目录 + mock 网络）：
 
 ```bash
-npm test              # Host 半：203 项（含安全回归、护栏、字幕选轨）
-npm run test:client   # Client 半：36 项（设置页真渲染）
-npm run test:qr       # 二维码编码器与参照实现逐格比对：38 项
+npm test                 # Host 半：203 项（含安全回归、护栏、字幕选轨）
+npm run test:client      # Client 半：36 项（设置页真渲染）
+npm run test:qr          # 二维码编码器与参照实现逐格比对：38 项
+npm run check:new-user   # 新用户旅程：首次启动的默认值 / 隐私边界 / 失败提示
 ```
 
 开发相关的架构、设计取舍与**实测踩过的坑**见 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)。

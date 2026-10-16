@@ -61,7 +61,8 @@
   "scripts": {
     "test": "node tools/smoke-test.mjs",
     "test:client": "node tools/client-smoke-test.mjs",
-    "test:qr": "node tools/qr-test.mjs"
+    "test:qr": "node tools/qr-test.mjs",
+    "check:new-user": "node tools/new-user-check.mjs"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
