@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="bili-duty">
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#3D5AFE"/>
+  <rect x="13" y="17" width="26" height="5" rx="2.5" fill="#FFFFFF" opacity="0.95"/>
+  <rect x="13" y="29" width="19" height="5" rx="2.5" fill="#FFFFFF" opacity="0.72"/>
+  <rect x="13" y="41" width="22" height="5" rx="2.5" fill="#FFFFFF" opacity="0.5"/>
+  <path d="M38 40l4.5 4.5L52 35" fill="none" stroke="#7CFFB2" stroke-width="5"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,21 @@
+# ── 依赖与构建产物 ──────────────────────────────────────────────
+node_modules/
+*.tgz
+
+# ── 本机运行时状态（插件家目录的产物，绝不该进版本库）──────────
+bili_credential.json
+config.json
+runs.md
+seen.md
+schedule-state.json
+apply-probe.json
+apply-error.log
+out/
+*.tmp
+
+# ── 编辑器与系统 ───────────────────────────────────────────────
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log

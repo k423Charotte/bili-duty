@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "BiliDuty",
+    "description": "Schedules a session to sweep Bilibili: reads subtitles and comments, picks out what is worth your attention, writes a daily report, and keeps a dedupe table. Judgment stays in the session's AI — the plugin only schedules, configures, and records."
+  }
+}
