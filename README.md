@@ -33,19 +33,28 @@
 
 ## 安装
 
-### 方式 A：从 npm 安装
+### 方式 A：桌面端（最常见）
+
+还没拿到包就先克隆：
+
+```bash
+git clone https://github.com/k423Charotte/bili-duty.git
+```
+
+然后在 DSH 里让 AI 装它（或直接调 `plugin_manager` 工具）：
+
+```text
+plugin_manager  action: install_bundle  target: <本包目录的绝对路径>
+```
+
+### 方式 B：命令行（装了 npm 版 CLI 的机器）
 
 ```bash
 dsh plugin add bili-duty
 ```
 
-### 方式 B：从本地目录安装
-
-在 DSH 里让 AI 执行（或直接用 `plugin_manager` 工具）：
-
-```text
-plugin_manager  action: install_bundle  target: <本包目录的绝对路径>
-```
+> ⚠️ 这条需要机器上有 `dsh` 命令（即 npm 上 `@deepseek-ai/dsh` 提供的 CLI，`npm i -g @deepseek-ai/dsh`）。
+> **桌面端默认没有这个命令** —— 那种情况请走上面的方式 A。
 
 ### 装完必须重启一次 DSH
 
