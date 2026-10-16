@@ -108,6 +108,19 @@ messages[120]: missing field 'role'
 修法：`agent.followup(createUserMessage({ content, source }))`（`@deepseek-ai/dsh-llm`），
 它会补齐 `role: 'user'` 与 `id`。**这类消息一旦写进会话存储就是 append-only，只能靠外科手术修。**
 
+⚠️ 但**别用顶层静态 import**。宿主版本一变、或这个导出没了，静态 import 失败会让**整个插件模块**加载不了 ——
+而它只影响「唤醒」与「延迟复核」两处。本插件改成**动态 import + 等价兜底**：
+
+```js
+let createUserMessage = (input) => ({ ...input, role: 'user', id: randomUUID() })  // 先兜底
+void import('@deepseek-ai/dsh-llm').then((mod) => {                                 // 异步升级
+  if (typeof mod?.createUserMessage === 'function') createUserMessage = mod.createUserMessage
+})
+```
+
+实际用的是哪一路，会记进 `<DSH_HOME>/bili-duty/apply-probe.json` 的 `createUserMessage` 字段
+（`official` 或 `fallback(...)`）—— 排障时一眼可见，不用猜。
+
 ### 10. `source.kind` 不能是 `"plugin"`
 
 DSH session format v4 明确拒绝：`value["kind"] === "plugin"` 直接抛
