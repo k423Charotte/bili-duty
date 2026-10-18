@@ -39,9 +39,10 @@
 包已发布在 npm 上。桌面端即使**没有 `dsh` 命令**也能装 —— `install_bundle` 的 `target` 可以直接写**包名**：
 
 ```text
-plugin_manager  action: install_bundle  target: bili-duty@0.1.3
+plugin_manager  action: install_bundle  target: bili-duty
 ```
 
+> 想锁死版本就写成 `bili-duty@0.1.3`（当前线上最新）；**不写版本号则始终装最新版**。
 > ✅ 2026-10-18 已在**别人的机器**上端到端验证过：`application: applied`、插件列表 +1、`bili_duty_info` 可调用、成功跑出日报。
 > 安装时会出现一条 `peer dependencies` 警告 —— 那是 `@deepseek-ai/cordis: "*"` **故意放宽**导致的**无害**警告，不是"版本不兼容拦截"（真正的门槛只有 `engines.dsh`）。
 

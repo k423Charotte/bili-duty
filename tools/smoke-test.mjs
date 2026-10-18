@@ -119,9 +119,9 @@ const ctx = {
     if (name === 'sessionQuery') {
       return {
         listSessions: async () => ([
-          { id: 'session-aaa-1111-2222-3333-444455556666', identity: { cwd: 'C:\\Users\\AA\\Desktop\\日常' }, createdAt: Date.now() - 86400000 },
-          { id: 'session-bbb-1111-2222-3333-444455556666', identity: { cwd: 'C:\\Users\\AA\\Desktop\\插件' }, createdAt: Date.now() - 3600000 },
-          { id: 'session-alpha', identity: { cwd: 'E:\\AI\\deepseek\\插件' }, createdAt: Date.now() },
+          { id: 'session-aaa-1111-2222-3333-444455556666', identity: { cwd: 'C:\\workspaces\\aaa' }, createdAt: Date.now() - 86400000 },
+          { id: 'session-bbb-1111-2222-3333-444455556666', identity: { cwd: 'C:\\workspaces\\bbb' }, createdAt: Date.now() - 3600000 },
+          { id: 'session-alpha', identity: { cwd: 'C:\\workspaces\\alpha' }, createdAt: Date.now() },
         ]),
         readTitleSnapshots: async (ids) => ids.map((id) => ({
           sessionId: id,
@@ -497,7 +497,7 @@ console.log('\n[13] 会话清单：列全量 + 标题一一对应 + 谁是活的
   check('冰会话的标题是「刷 B站」', byId('session-aaa-1111-2222-3333-444455556666')?.title === '刷 B站', byId('session-aaa-1111-2222-3333-444455556666'))
   check('没标题的保持空（界面再兜底显示）', byId('session-bbb-1111-2222-3333-444455556666')?.title === '', byId('session-bbb-1111-2222-3333-444455556666'))
   check('工作目录也跟着会话走（不是同一个值）',
-    byId('session-alpha')?.cwd === 'E:\\AI\\deepseek\\插件' && byId('session-bbb-1111-2222-3333-444455556666')?.cwd === 'C:\\Users\\AA\\Desktop\\插件',
+    byId('session-alpha')?.cwd === 'C:\\workspaces\\alpha' && byId('session-bbb-1111-2222-3333-444455556666')?.cwd === 'C:\\workspaces\\bbb',
     list.map((s) => [s.id.slice(-8), s.cwd]))
 
   check('活着的排在前面', list[0].live === true, list.map((s) => [s.id, s.live]))

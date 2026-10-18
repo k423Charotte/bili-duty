@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 
 const PORT = process.env.DSH_PORT || 43189
-// ⚠️ 必须用相对路径：这个文件会进公开仓库。原先硬编码作者本机路径（`E:/AI/deepseek/...`）
+// ⚠️ 必须用相对路径：这个文件会进公开仓库。原先硬编码的是作者本机绝对路径，
 // 既把私有目录名写进了开源代码，也让别人克隆后根本跑不了。
 const FILE = fileURLToPath(new URL('../lib/client.js', import.meta.url))
 

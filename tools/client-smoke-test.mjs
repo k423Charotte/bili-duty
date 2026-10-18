@@ -150,7 +150,7 @@ console.log('\n[4] 渲染冒烟：加载态与主界面')
     off_peak_only: true,
     peak_windows: ['09:00-12:00', '14:00-18:00'],
     report_detail: 'thin',
-    workspace: 'C:\\Users\\AA\\Documents\\bili-duty',
+    workspace: 'C:\\workspaces\\bili-duty',
     target_session_id: 'session-alpha',
   }
 
