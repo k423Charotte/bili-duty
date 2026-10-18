@@ -27,34 +27,46 @@
 | --- | --- |
 | DSH | `>= 0.2.0-rc.2`（桌面端或 Web 端均可） |
 | Node.js | `>= 22` |
-| 其它依赖 | **零**。不需要 Python、不需要 uv、不需要 API Key |
+| 插件自身依赖 | **零**。不需要 Python、不需要 uv；**插件自己不调用模型、不需要 API Key** |
+| ⚠️ 真正的**前置条件** | **被唤醒的那个会话所用的模型必须有可用凭证**。插件只负责"把任务投进会话"，干活的是会话里的模型 —— 如果那台机器的默认模型没配 API Key，这一轮会在会话里失败（`MISSING_CREDENTIAL` / `no API key for provider route …`），而 `runs.md` 仍会记一行 `ok`（那只是「投递成功」）。别把这种情况当成插件坏了，详见「常见问题」。 |
 
 ---
 
 ## 安装
 
-### 方式 A：桌面端（最常见）
+### 方式 A：npm 直装（**推荐**，桌面端也能用，不用克隆）
 
-还没拿到包就先克隆：
+包已发布在 npm 上。桌面端即使**没有 `dsh` 命令**也能装 —— `install_bundle` 的 `target` 可以直接写**包名**：
+
+```text
+plugin_manager  action: install_bundle  target: bili-duty@0.1.3
+```
+
+> ✅ 2026-10-18 已在**别人的机器**上端到端验证过：`application: applied`、插件列表 +1、`bili_duty_info` 可调用、成功跑出日报。
+> 安装时会出现一条 `peer dependencies` 警告 —— 那是 `@deepseek-ai/cordis: "*"` **故意放宽**导致的**无害**警告，不是"版本不兼容拦截"（真正的门槛只有 `engines.dsh`）。
+
+### 方式 B：从源码目录装（想自己看代码 / 要装自己改的版本）
 
 ```bash
 git clone https://github.com/k423Charotte/bili-duty.git
 ```
 
-然后在 DSH 里让 AI 装它（或直接调 `plugin_manager` 工具）：
+然后：
 
 ```text
-plugin_manager  action: install_bundle  target: <本包目录的绝对路径>
+plugin_manager  action: install_bundle  target: <克隆目录的绝对路径>
 ```
 
-### 方式 B：命令行（装了 npm 版 CLI 的机器）
+> ⚠️ `target` 必须指向**含 `package.json` 的那一层**（多套一层文件夹是最常见的失败原因）。
+> 网络连不上 GitHub 时，把仓库打成 zip 拷过去解压，同样用这条命令装。
+
+### 方式 C：命令行（只有装了 npm 版 CLI 的机器）
 
 ```bash
 dsh plugin add bili-duty
 ```
 
-> ⚠️ 这条需要机器上有 `dsh` 命令（即 npm 上 `@deepseek-ai/dsh` 提供的 CLI，`npm i -g @deepseek-ai/dsh`）。
-> **桌面端默认没有这个命令** —— 那种情况请走上面的方式 A。
+> ⚠️ 需要机器上有 `dsh` 命令（npm 上 `@deepseek-ai/dsh` 提供的 CLI）。**桌面端默认没有** —— 那种情况走方式 A 或 B。
 
 ### 装完必须重启一次 DSH
 
@@ -152,6 +164,18 @@ powershell -ExecutionPolicy Bypass -File tools\restart-dsh.ps1
 
 **点了「立即跑一轮」，但没有任何会话被唤醒？**
 几乎总是「目标会话没打开」。去看 `runs.md`，会有一行写明原因（`NO_SESSION`）。把那个会话在 DSH 里打开，再点一次。
+
+**`runs.md` 里为什么会出现两行？**
+这是**两件不同的事**，不是重复记录：
+- 第一行是**插件**写的 —— 备注以「**投递成功**」开头，扫描/收取/跳过全是 `0`。它只说明"任务已经投进目标会话了"。
+- 第二行是**被唤醒的会话里那个 AI** 用 `bili_duty_run_add` 写的 —— 扫描/收取/跳过有数字，备注里是它这轮的真实结论。
+
+判断"这一轮到底跑没跑通"，看**第二行有没有数字** + `<DSH 数据目录>/bili-duty/out/<日期>.md` 有没有日报。
+
+**会话里报 `no API key for provider route …` / `MISSING_CREDENTIAL`？**
+**这不是插件问题**，是那台机器的**模型凭证**没配：插件只把任务投进会话，干活的是会话里的模型。
+去 **设置 → 模型** 给对应 provider 填 Key（或把默认模型换成已配好凭证的那条），再点一次「立即跑一轮」。
+注意此时 `runs.md` 第一行仍会写「投递成功」—— 那**不代表**这一轮跑通了（见上一条）。
 
 **报告说「判重表读不到」？**
 说明 `seen.md` 读不出来（被占用、权限、或误删成目录）。**这时不要以为"没记录过"** —— 插件按纪律跳过了发评论。修好文件再跑。

@@ -1,9 +1,12 @@
 /** 探测 /plugins 组合路由，弄清客户端 bundle 到底能不能取到。 */
 import { statSync, readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
+import { fileURLToPath } from 'node:url'
 
 const PORT = process.env.DSH_PORT || 43189
-const FILE = 'E:/AI/deepseek/插件/bili-duty/packages/bili-duty/lib/client.js'
+// ⚠️ 必须用相对路径：这个文件会进公开仓库。原先硬编码作者本机路径（`E:/AI/deepseek/...`）
+// 既把私有目录名写进了开源代码，也让别人克隆后根本跑不了。
+const FILE = fileURLToPath(new URL('../lib/client.js', import.meta.url))
 
 function framedHash(domain, parts) {
   const hash = createHash('sha1').update(domain).update('\0')
