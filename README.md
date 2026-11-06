@@ -34,66 +34,69 @@
 
 ## 安装
 
-### 方式 A：npm 直装（**推荐**，桌面端也能用，不用克隆）
-
-包已发布在 npm 上。桌面端即使**没有 `dsh` 命令**也能装 —— `install_bundle` 的 `target` 可以直接写**包名**：
+### 一行装完
 
 ```text
 plugin_manager  action: install_bundle  target: bili-duty
 ```
 
-> 想锁死版本就写成 `bili-duty@0.1.3`（当前线上最新）；**不写版本号则始终装最新版**。
-> ✅ 2026-10-18 已在**别人的机器**上端到端验证过：`application: applied`、插件列表 +1、`bili_duty_info` 可调用、成功跑出日报。
-> 安装时会出现一条 `peer dependencies` 警告 —— 那是 `@deepseek-ai/cordis: "*"` **故意放宽**导致的**无害**警告，不是"版本不兼容拦截"（真正的门槛只有 `engines.dsh`）。
+> 桌面端即使**没有 `dsh` 命令**也能装 —— `target` 可以直接写**包名**。
+> 想锁死版本写 `bili-duty@0.1.3`；**不写则始终装最新版**。
+> ✅ 2026-10-18 已在**别人的机器**上端到端验证：`application: applied`、插件列表 +1、`bili_duty_info` 可调用、成功跑出日报。
 
-### 方式 B：从源码目录装（想自己看代码 / 要装自己改的版本）
+装完**重启一次 DSH**，然后页面按 **F5**（宿主重启不等于刷新页面）。
+
+<details>
+<summary>装不上 / 想从源码装 / 重启后应用起不来 → 展开</summary>
+
+**从源码目录装**（想自己看代码，或装自己改的版本）
 
 ```bash
 git clone https://github.com/k423Charotte/bili-duty.git
 ```
 
-然后：
+然后 `install_bundle` 的 target 指向克隆目录 —— **必须是指向含 `package.json` 的那一层**，多套一层文件夹是最常见的失败原因。网络连不上 GitHub 时，把仓库打成 zip 拷过去解压，同样用这条命令装。
 
-```text
-plugin_manager  action: install_bundle  target: <克隆目录的绝对路径>
-```
-
-> ⚠️ `target` 必须指向**含 `package.json` 的那一层**（多套一层文件夹是最常见的失败原因）。
-> 网络连不上 GitHub 时，把仓库打成 zip 拷过去解压，同样用这条命令装。
-
-### 方式 C：命令行（只有装了 npm 版 CLI 的机器）
+**命令行安装**（只有装了 npm 版 CLI 的机器）
 
 ```bash
 dsh plugin add bili-duty
 ```
 
-> ⚠️ 需要机器上有 `dsh` 命令（npm 上 `@deepseek-ai/dsh` 提供的 CLI）。**桌面端默认没有** —— 那种情况走方式 A 或 B。
+需要机器上有 `dsh` 命令（npm 上 `@deepseek-ai/dsh` 提供的 CLI）。**桌面端默认没有**，那种情况走上面的包名安装。
 
-### 装完必须重启一次 DSH
+**安装时那条 `peer dependencies` 警告**
 
-新插件的行要**重启时才进入组合**；替换已装包也必须重启才能加载新一代 JS 模块。
+`@deepseek-ai/cordis: "*"` **故意放宽**导致的**无害**警告，不是"版本不兼容拦截" —— 真正的门槛只有 `engines.dsh`。
+
+**重启脚本（Windows）**
 
 ```powershell
-# Windows：脚本会结束当前 DSH 进程再启动它（必须带 -ExecutionPolicy Bypass）
 powershell -ExecutionPolicy Bypass -File tools\restart-dsh.ps1
 ```
 
-> macOS / Linux：这个脚本只在 Windows 上有意义 —— 请**手动退出并重新启动 DSH**。插件本体的代码是跨平台的（没有平台专属 API）。
+macOS / Linux 请手动退出并重启 DSH（插件本体是跨平台的，没有平台专属 API）。
 
-重启后在页面上按一次 **F5**（客户端模块是页面侧的东西，重启宿主不等于刷新页面）。
+**⛔ 重启后弹「应用无法启动」**
 
-> ⛔ 如果重启后弹「应用无法启动」，**不要**点那个「禁用第三方插件、备份 profile patch 并重启」按钮 ——
-> 它会用安全模式 patch **整份替换**你的 profile 配置，冲掉你手工调好的模型与偏好。
-> 要摘除本插件，只删 profile 里 `cordis.patch.yml` 末尾那段 `insert`（本插件那几行）再重启即可。
+**不要**点那个「禁用第三方插件、备份 profile patch 并重启」按钮 —— 它会用安全模式 patch **整份替换**你的 profile 配置，冲掉你手工调好的模型与偏好。
+
+要摘除本插件，只删 profile 里 `cordis.patch.yml` 末尾那段 `insert`（本插件那几行）再重启即可。
+
+</details>
 
 ---
 
 ## 首次配置（四步）
 
+![设置页](docs/images/settings-top.png)
+
 1. 打开 **设置 → 刷B站值班表**。
 2. **选目标会话** —— 这是最容易踩的一步：
    > ⚠️ 被唤醒的会话**必须此刻正在 DSH 里打开着**。插件只能把任务投给活着的会话；
    > 目标会话没打开时，那一轮会记一条失败（不会静默）。
+
+   ![选目标会话](docs/images/target-session.png)
 3. 填**关键词**（默认给的是示例，请改成你真正关心的领域）。
 4. 点 **「立即跑一轮」** 试一次 —— 目标会话会被唤醒并开始干活。
 
