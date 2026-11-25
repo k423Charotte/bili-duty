@@ -1,6 +1,6 @@
 {
   "name": "bili-duty",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "license": "MIT",
   "description": "刷B站值班表：定时唤醒某个会话去扫 B 站、读字幕与评论挑出值得看的、写一份日报、维护判重表 —— 判断留给会话里的 AI，插件只做调度、配置与记录",
   "repository": {
@@ -57,7 +57,7 @@
   ],
   "engines": {
     "node": ">=22",
-    "dsh": ">=0.2.0-rc.2"
+    "dsh": ">=0.2.0-rc.2 <0.3.0-0"
   },
   "scripts": {
     "test": "node tools/smoke-test.mjs",
